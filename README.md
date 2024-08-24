@@ -76,6 +76,38 @@
    - Redis: `localhost:6379`
    - Memcached: `localhost:11211`
 
+4. **Stop the services:**
+
+    a. MySQL
+    ```bash
+    make down_mysql
+    ```
+
+    b. PostgreSQL
+    ```bash
+    make down_postgres
+    ```
+
+    c. Mongo
+    ```bash
+    make down_mongo
+    ```
+
+    d. Redis
+    ```bash
+    make down_redis
+    ```
+
+    e. Memcached
+    ```bash
+    make down_memcached
+    ```
+
+    f. All
+    ```bash
+    make down
+    ```
+
 ### Configuration
 - You can customize the configuration of each service by editing the `.env` file or directly modifying the `docker-compose.yml` file.
 
