@@ -1,0 +1,84 @@
+version: "3"
+services:
+  mysql:
+    platform: "linux/amd64"
+    image: "mysql:8.0.33"
+    container_name: containerize-mysql
+    volumes:
+      - "./data/mysql_data:/var/lib/mysql/"
+    env_file:
+      - ./.env
+    ports:
+      - "${DOCKER_MYSQL_PORT:-3306}:3306"
+  phpmyadmin:
+    platform: "linux/amd64"
+    image: "phpmyadmin:5.2.1"
+    container_name: containerize-phpmyadmin
+    env_file:
+      - ./.env
+    ports:
+      - "${DOCKER_PHPMYADMIN_PORT:-8082}:80"
+  postgres:
+    platform: "linux/amd64"
+    image: "postgres:14.1-alpine"
+    container_name: containerize-postgres
+    volumes:
+      - "./data/postgres_data:/var/lib/postgresql/data"
+    env_file:
+      - ./.env
+    ports:
+      - "${DOCKER_POSTGRES_PORT:-5432}:5432"
+    restart: on-failure
+  pgadmin:
+    platform: "linux/amd64"
+    image: "dpage/pgadmin4:8.1"
+    container_name: containerize-pgadmin
+    volumes:
+      - "./data/pgadmin_data:/var/lib/pgadmin:z"
+    env_file:
+      - ./.env
+    ports:
+      - "${DOCKER_PGADMIN_PORT:-82}:80"
+    restart: on-failure
+  mongo:
+    platform: "linux/amd64"
+    image: mongo:4.4.6
+    container_name: containerize-mongo
+    env_file:
+      - ./.env
+    ports:
+      - "${DOCKER_MONGO_PORT:-27017}:27017"
+    volumes:
+      - "./data/mongo_data:/data/db"
+      - "./data/mongo_config:/data/configdb"
+    restart: on-failure
+  mongo_express:
+    platform: "linux/amd64"
+    image: mongo-express:1.0.2-20-alpine3.19
+    container_name: containerize-mongo-express
+    env_file:
+      - ./.env
+    ports:
+      - "${DOCKER_MONGO_EXPRESS_PORT:-8081}:8081"
+    restart: on-failure
+  redis:
+    platform: "linux/amd64"
+    image: redis:7-alpine
+    container_name: containerize-redis
+    ports:
+      - "${DOCKER_REDIS_PORT:-6379}:6379"
+    restart: on-failure
+  memcached:
+    platform: "linux/amd64"
+    image: memcached:1.6-alpine
+    container_name: containerize-memcached
+    ports:
+      - "${DOCKER_MEMCACHED_PORT:-11211}:11211"
+    restart: on-failure
+
+volumes:
+  mysql_data:
+  postgres_data:
+  pgadmin_data:
+  mongo_data:
+  mongo_config:
