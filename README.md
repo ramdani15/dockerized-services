@@ -88,8 +88,5 @@ To add new services, simply:
 ## Contributing
 Feel free to contribute by opening issues or submitting pull requests. Contributions are welcome, whether it's for bug fixes, new features, or additional services.
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ## Contact
 For any inquiries, please contact [ramdaninformatika@gmail.com](mailto:ramdaninformatika@gmail.com).
