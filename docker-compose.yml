@@ -75,6 +75,24 @@ services:
     ports:
       - "${DOCKER_MEMCACHED_PORT:-11211}:11211"
     restart: on-failure
+  zookeeper:
+    platform: "linux/amd64"
+    image: wurstmeister/zookeeper:latest
+    container_name: containerize-zookeeper
+    ports:
+      - "${DOCKER_ZOOKEEPER_PORT:-2181}:2181"
+  kafka:
+    platform: "linux/amd64"
+    image: wurstmeister/kafka:latest
+    container_name: containerize-kafka
+    env_file:
+      - ./.env
+    ports:
+      - "${DOCKER_KAFKA_PORT:-9092}:9092"
+    expose:
+      - "${DOCKER_KAFKA_EXPOSE_PORT:-9093}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   mysql_data:
