@@ -4,6 +4,7 @@ postgres := postgres pgadmin
 mongo := mongo mongo_express
 redis := redis
 memcached := memcached
+kafka := kafka zookeeper
 
 # builds
 build:
@@ -24,6 +25,9 @@ build_redis:
 build_memcached:
 	echo "Build memcached :" $(memcached)
 	docker compose up -d --build $(memcached)
+build_kafka:
+	echo "Build kafka :" $(kafka)
+	docker compose up -d --build $(kafka)
 
 # downs
 down:
@@ -44,3 +48,6 @@ down_redis:
 down_memcached:
 	echo "[Common] Down $(memcached) containers"
 	docker compose down $(memcached)
+down_kafka:
+	echo "[Common] Down $(kafka) containers"
+	docker compose down $(kafka)

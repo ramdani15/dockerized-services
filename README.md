@@ -13,6 +13,7 @@
 - **MongoExpress**: Web interface for managing Mongo databases.
 - **Redis**: In-memory data structure store, used as a database, cache, and message broker.
 - **Memcached**: High-performance, distributed memory object caching system.
+- **Kafka**: Distributed event-streaming platform designed for handling real-time data feeds.
 - **Elasticsearch**: (Planned) Distributed search and analytics engine.
 
 ## Getting Started
@@ -61,7 +62,12 @@
     make build_memcached
     ```
 
-    f. All
+    f. Kafka
+    ```bash
+    make build_kafka
+    ```
+
+    g. All
     ```bash
     make build
     ```
@@ -75,6 +81,7 @@
    - MongoExpress: `http://localhost:8081`
    - Redis: `localhost:6379`
    - Memcached: `localhost:11211`
+   - Kafka: `localhost:9092`
 
 4. **Stop the services:**
 
@@ -103,7 +110,12 @@
     make down_memcached
     ```
 
-    f. All
+    f. Kafka
+    ```bash
+    make down_kafka
+    ```
+
+    g. All
     ```bash
     make down
     ```
