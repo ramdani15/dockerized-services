@@ -18,7 +18,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - "127.0.0.1:${DOCKER_PHPMYADMIN_PORT:-8082}:80"
+      - "${DOCKER_PHPMYADMIN_PORT:-8082}:80"
     volumes:
       - "./php-mitigation.ini:/usr/local/etc/php/conf.d/zz-mitigation.ini:ro"
     restart: on-failure
