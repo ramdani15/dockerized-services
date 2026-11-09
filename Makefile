@@ -1,6 +1,7 @@
-all := mysql phpmyadmin postgres pgadmin mongo mongo_express redis memcached
+all := mysql phpmyadmin postgres postgis pgadmin mongo mongo_express redis memcached
 mysql := mysql phpmyadmin
 postgres := postgres pgadmin
+postgis := postgis pgadmin
 mongo := mongo mongo_express
 redis := redis
 memcached := memcached
@@ -16,6 +17,9 @@ build_mysql:
 build_postgres:
 	echo "Build postgres :" $(postgres)
 	docker compose up -d --build $(postgres)
+build_postgis:
+	echo "Build postgis :" $(postgis)
+	docker compose up -d --build $(postgis)
 build_mongo:
 	echo "Build mongo :" $(mongo)
 	docker compose up -d --build $(mongo)
@@ -39,6 +43,9 @@ down_mysql:
 down_postgres:
 	echo "[Common] Down $(postgres) containers"
 	docker compose down $(postgres)
+down_postgis:
+	echo "[Common] Down $(postgis) containers"
+	docker compose down $(postgis)
 down_mongo:
 	echo "[Common] Down $(mongo) containers"
 	docker compose down $(mongo)

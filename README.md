@@ -8,6 +8,7 @@
 - **MySQL**: Relational database management system.
 - **phpMyAdmin**: Web interface for managing MySQL databases.
 - **PostgreSQL**: Advanced open-source relational database.
+- **PostGIS**: PostgreSQL 16 with the PostGIS 3.4 spatial extension, running as a separate instance.
 - **pgAdmin**: Web interface for managing PostgreSQL databases.
 - **MongoDB**: NoSQL document database.
 - **MongoExpress**: Web interface for managing Mongo databases.
@@ -47,27 +48,32 @@
     make build_postgres
     ```
 
-    c. Mongo
+    c. PostGIS
+    ```bash
+    make build_postgis
+    ```
+
+    d. Mongo
     ```bash
     make build_mongo
     ```
 
-    d. Redis
+    e. Redis
     ```bash
     make build_redis
     ```
 
-    e. Memcached
+    f. Memcached
     ```bash
     make build_memcached
     ```
 
-    f. Kafka
+    g. Kafka
     ```bash
     make build_kafka
     ```
 
-    g. All
+    h. All
     ```bash
     make build
     ```
@@ -76,6 +82,7 @@
    - MySQL: `localhost:3306`
    - phpMyAdmin: `http://localhost:8082`
    - PostgreSQL: `localhost:5432`
+   - PostGIS: `localhost:5433`
    - pgAdmin: `http://localhost:82`
    - MongoDB: `localhost:27017`
    - MongoExpress: `http://localhost:8081`
@@ -95,33 +102,43 @@
     make down_postgres
     ```
 
-    c. Mongo
+    c. PostGIS
+    ```bash
+    make down_postgis
+    ```
+
+    d. Mongo
     ```bash
     make down_mongo
     ```
 
-    d. Redis
+    e. Redis
     ```bash
     make down_redis
     ```
 
-    e. Memcached
+    f. Memcached
     ```bash
     make down_memcached
     ```
 
-    f. Kafka
+    g. Kafka
     ```bash
     make down_kafka
     ```
 
-    g. All
+    h. All
     ```bash
     make down
     ```
 
 ### Configuration
 - You can customize the configuration of each service by editing the `.env` file or directly modifying the `docker-compose.yml` file.
+
+### PostGIS
+- PostGIS runs as its own PostgreSQL 16 instance with its own data directory (`data/postgis_data`) and credentials (`POSTGIS_*` in `.env`), so it does not touch the existing PostgreSQL 14 data.
+- The PostGIS extension is enabled automatically in `POSTGIS_DB` and in the `template_postgis` database. For any other database, run `CREATE EXTENSION postgis;`, or create it from the template: `CREATE DATABASE my_geo_db TEMPLATE template_postgis;`.
+- To manage it from pgAdmin, register a new server with host `postgis`, port `5432` (the port inside the Docker network, not the published one), and the `POSTGIS_USER` / `POSTGIS_PASSWORD` credentials.
 
 ### Adding New Services
 To add new services, simply:
