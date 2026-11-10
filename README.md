@@ -135,6 +135,11 @@
 ### Configuration
 - You can customize the configuration of each service by editing the `.env` file or directly modifying the `docker-compose.yml` file.
 
+### Restart policy
+- Every service uses `restart: unless-stopped`, so containers come back automatically after a host or Docker daemon restart, unless you stopped them yourself (`make down_*` / `docker stop`).
+- A container keeps the restart policy it was **created** with. After changing `restart:` in `docker-compose.yml`, recreate the container for it to take effect, e.g. `docker compose up -d --force-recreate mysql`. Data lives in `./data/`, so recreating is safe.
+- Check what a running container actually has: `docker inspect -f '{{.HostConfig.RestartPolicy.Name}}' containerize-mysql`.
+
 ### PostGIS
 - PostGIS runs as its own PostgreSQL 16 instance with its own data directory (`data/postgis_data`) and credentials (`POSTGIS_*` in `.env`), so it does not touch the existing PostgreSQL 14 data.
 - The PostGIS extension is enabled automatically in `POSTGIS_DB` and in the `template_postgis` database. For any other database, run `CREATE EXTENSION postgis;`, or create it from the template: `CREATE DATABASE my_geo_db TEMPLATE template_postgis;`.

@@ -10,7 +10,7 @@ services:
       - ./.env
     ports:
       - "${DOCKER_MYSQL_PORT:-3306}:3306"
-    restart: on-failure
+    restart: unless-stopped
   phpmyadmin:
     platform: "linux/amd64"
     image: "phpmyadmin:5.2"
@@ -21,7 +21,7 @@ services:
       - "${DOCKER_PHPMYADMIN_PORT:-8082}:80"
     volumes:
       - "./php-mitigation.ini:/usr/local/etc/php/conf.d/zz-mitigation.ini:ro"
-    restart: on-failure
+    restart: unless-stopped
   postgres:
     platform: "linux/amd64"
     image: "postgres:14.1-alpine"
@@ -32,7 +32,7 @@ services:
       - ./.env
     ports:
       - "${DOCKER_POSTGRES_PORT:-5432}:5432"
-    restart: on-failure
+    restart: unless-stopped
   postgis:
     platform: "linux/amd64"
     image: "postgis/postgis:16-3.4-alpine"
@@ -45,7 +45,7 @@ services:
       POSTGRES_PASSWORD: "${POSTGIS_PASSWORD:-password}"
     ports:
       - "${DOCKER_POSTGIS_PORT:-5433}:5432"
-    restart: on-failure
+    restart: unless-stopped
   pgadmin:
     platform: "linux/amd64"
     image: "dpage/pgadmin4:8.1"
@@ -56,7 +56,7 @@ services:
       - ./.env
     ports:
       - "${DOCKER_PGADMIN_PORT:-82}:80"
-    restart: on-failure
+    restart: unless-stopped
   mongo:
     platform: "linux/amd64"
     image: mongo:4.4.6
@@ -68,7 +68,7 @@ services:
     volumes:
       - "./data/mongo_data:/data/db"
       - "./data/mongo_config:/data/configdb"
-    restart: on-failure
+    restart: unless-stopped
   mongo_express:
     platform: "linux/amd64"
     image: mongo-express:1.0.2-20-alpine3.19
@@ -77,27 +77,28 @@ services:
       - ./.env
     ports:
       - "${DOCKER_MONGO_EXPRESS_PORT:-8081}:8081"
-    restart: on-failure
+    restart: unless-stopped
   redis:
     platform: "linux/amd64"
     image: redis:7-alpine
     container_name: containerize-redis
     ports:
       - "${DOCKER_REDIS_PORT:-6379}:6379"
-    restart: on-failure
+    restart: unless-stopped
   memcached:
     platform: "linux/amd64"
     image: memcached:1.6-alpine
     container_name: containerize-memcached
     ports:
       - "${DOCKER_MEMCACHED_PORT:-11211}:11211"
-    restart: on-failure
+    restart: unless-stopped
   zookeeper:
     platform: "linux/amd64"
     image: wurstmeister/zookeeper:latest
     container_name: containerize-zookeeper
     ports:
       - "${DOCKER_ZOOKEEPER_PORT:-2181}:2181"
+    restart: unless-stopped
   kafka:
     platform: "linux/amd64"
     image: wurstmeister/kafka:latest
@@ -110,6 +111,7 @@ services:
       - "${DOCKER_KAFKA_EXPOSE_PORT:-9093}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
 
 volumes:
   mysql_data:
