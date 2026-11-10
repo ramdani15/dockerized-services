@@ -73,12 +73,12 @@
     make build_kafka
     ```
 
-    h. All
+    h. All (everything except Kafka/Zookeeper, which are started with `make build_kafka`)
     ```bash
     make build
     ```
 
-3. **Access the services:**
+4. **Access the services:**
    - MySQL: `localhost:3306`
    - phpMyAdmin: `http://localhost:8082`
    - PostgreSQL: `localhost:5432`
@@ -89,8 +89,9 @@
    - Redis: `localhost:6379`
    - Memcached: `localhost:11211`
    - Kafka: `localhost:9092`
+   - Zookeeper: `localhost:2181`
 
-4. **Stop the services:**
+5. **Stop the services:**
 
     a. MySQL
     ```bash
@@ -127,13 +128,18 @@
     make down_kafka
     ```
 
-    h. All
+    h. All (stops every container in this project, including Kafka/Zookeeper)
     ```bash
     make down
     ```
 
 ### Configuration
 - You can customize the configuration of each service by editing the `.env` file or directly modifying the `docker-compose.yml` file.
+
+### Restart policy
+- Every service uses `restart: unless-stopped`, so containers come back automatically after a host or Docker daemon restart, unless you stopped them yourself (`make down_*` / `docker stop`).
+- A container keeps the restart policy it was **created** with. After changing `restart:` in `docker-compose.yml`, recreate the container for it to take effect, e.g. `docker compose up -d --force-recreate mysql`. Data lives in `./data/`, so recreating is safe.
+- Check what a running container actually has: `docker inspect -f '{{.HostConfig.RestartPolicy.Name}}' containerize-mysql`.
 
 ### PostGIS
 - PostGIS runs as its own PostgreSQL 16 instance with its own data directory (`data/postgis_data`) and credentials (`POSTGIS_*` in `.env`), so it does not touch the existing PostgreSQL 14 data.
@@ -142,9 +148,11 @@
 
 ### Adding New Services
 To add new services, simply:
-1. Add the necessary service configuration to the `docker-compose.yml` file.
-2. Add the make command in `Makefile`.
-3. Build and start the services again using registered command in `Makefile`.
+1. Add the service to `docker-compose.yml`, following the existing pattern (pinned image tag, `containerize-<service>` container name, `${DOCKER_<SERVICE>_PORT:-default}` port and `restart: unless-stopped`).
+2. Add the `build_*` / `down_*` targets in `Makefile`, and add the service to `all` if it should start with `make build`.
+3. Add its port and any credentials to `.env.example`.
+4. Document it in this README (service list, start/stop commands, access URL).
+5. Build and start it using the new `make` target.
 
 ## Contributing
 Feel free to contribute by opening issues or submitting pull requests. Contributions are welcome, whether it's for bug fixes, new features, or additional services.
